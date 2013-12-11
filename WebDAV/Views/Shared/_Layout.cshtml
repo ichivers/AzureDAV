@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Application name", "Index", "Home", null, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav nav-pills">
+                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    <li>@Html.ActionLink("About", "About", "Home")</li>
+                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    <li>
+                        <button class="btn btn-default navbar-btn" onclick="openFileExplorer()">File Explorer</button>
+                    </li>
+                    <li><button class="btn btn-default navbar-btn" onclick="newWordDocument()">New Document</button></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <span id="fileExplorer" style="behavior: url(#default#httpFolder);" />
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+        </footer>
+    </div>
+    <script type="text/javascript">
+        function openFileExplorer() {
+            var port = window.location.port;
+            if (port == "")
+                port = window.location.protocol == 'http:' ? '80' : '443';
+            var uri = window.location.protocol + '//' + window.location.hostname + ':' + port + '/';
+            fileExplorer.navigate(uri);
+        }
+        function newWordDocument() {
+            if (window.ActiveXObject) {
+                var obj = new ActiveXObject("Sharepoint.OpenDocuments.2");
+                obj.CreateNewDocument2(window, "http://iisexpress:81/Document.dotx", "http://iisexpress:81/New Document.docx");
+            }
+        }
+    </script>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
